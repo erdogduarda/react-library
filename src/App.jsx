@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { BooksProvider } from './context/BooksContext';
 import { Navbar } from './components/Navbar';
 import { LibraryPage } from './pages/LibraryPage';
