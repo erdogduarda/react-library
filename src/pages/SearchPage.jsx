@@ -28,9 +28,9 @@ function SearchResultItem({ book, onAdd, inLibrary, index }) {
         <div>
           <h3 className="text-xl font-bold text-gray-900 leading-tight">{book.title}</h3>
           <p className="text-gray-600 font-medium mt-1">{book.author}</p>
-          {book.year && (
-            <p className="text-gray-400 text-sm mt-1">
-              First published: {book.year}
+          {book.description && (
+            <p className="text-gray-500 text-sm mt-2 line-clamp-3">
+              {book.description}
             </p>
           )}
         </div>
@@ -94,19 +94,22 @@ export function SearchPage() {
       const data = await response.json();
 
       if (data.items && data.items.length > 0) {
-        const formattedResults = data.items.map((item) => {
-          const info = item.volumeInfo;
-          const isbnObj = info.industryIdentifiers?.find(id => id.type === 'ISBN_13') || 
-                         info.industryIdentifiers?.find(id => id.type === 'ISBN_10');
-          
-          return {
-            isbn: isbnObj ? isbnObj.identifier : item.id,
-            title: info.title,
-            author: info.authors ? info.authors.join(', ') : 'Unknown Author',
-            cover: info.imageLinks?.thumbnail?.replace('http:', 'https:') || null,
-            year: info.publishedDate ? info.publishedDate.substring(0, 4) : 'Unknown',
-          };
-        });
+        const formattedResults = data.items
+          .filter(item => item.volumeInfo) // Ensure volumeInfo exists
+          .map((item) => {
+            const info = item.volumeInfo;
+            const isbnObj = info.industryIdentifiers?.find(id => id.type === 'ISBN_13') || 
+                           info.industryIdentifiers?.find(id => id.type === 'ISBN_10');
+            
+            return {
+              isbn: isbnObj ? isbnObj.identifier : item.id,
+              title: info.title || 'Unknown Title',
+              author: info.authors ? info.authors.join(', ') : 'Unknown Author',
+              cover: info.imageLinks?.thumbnail?.replace('http:', 'https:') || null,
+              year: info.publishedDate ? info.publishedDate.substring(0, 4) : 'Unknown',
+              description: info.description || null,
+            };
+          });
         setResults(formattedResults);
       } else {
         setError('No books found. Try a different search term.');
