@@ -82,12 +82,13 @@ export function SearchPage() {
     setResults([]);
 
     try {
+      // Request specific fields to improve performance and reduce payload size
       const response = await fetch(
-        `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=20`
+        `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=20&fields=key,title,author_name,cover_i,first_publish_year,isbn`
       );
 
       if (!response.ok) {
-        throw new Error(`API Error: ${response.status}`);
+        throw new Error(`API Error: ${response.status} ${response.statusText}`);
       }
 
       const data = await response.json();
@@ -108,7 +109,7 @@ export function SearchPage() {
       }
     } catch (err) {
       console.error('Search failed:', err);
-      setError('Failed to fetch search results. Please try again.');
+      setError(`Failed to fetch results: ${err.message || 'Unknown error'}`);
     } finally {
       setLoading(false);
     }
