@@ -82,9 +82,9 @@ export function SearchPage() {
     setResults([]);
 
     try {
-      // Request specific fields to improve performance and reduce payload size
+      // Switch to Google Books API since Open Library is down
       const response = await fetch(
-        `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=20&fields=key,title,author_name,cover_i,first_publish_year,isbn`
+        `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=20`
       );
 
       if (!response.ok) {
@@ -93,16 +93,20 @@ export function SearchPage() {
 
       const data = await response.json();
 
-      if (data.docs && data.docs.length > 0) {
-        const formattedResults = data.docs.map((doc) => ({
-          isbn: doc.isbn ? doc.isbn[0] : doc.key,
-          title: doc.title,
-          author: doc.author_name ? doc.author_name.join(', ') : 'Unknown Author',
-          cover: doc.cover_i
-            ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
-            : null,
-          year: doc.first_publish_year,
-        }));
+      if (data.items && data.items.length > 0) {
+        const formattedResults = data.items.map((item) => {
+          const info = item.volumeInfo;
+          const isbnObj = info.industryIdentifiers?.find(id => id.type === 'ISBN_13') || 
+                         info.industryIdentifiers?.find(id => id.type === 'ISBN_10');
+          
+          return {
+            isbn: isbnObj ? isbnObj.identifier : item.id,
+            title: info.title,
+            author: info.authors ? info.authors.join(', ') : 'Unknown Author',
+            cover: info.imageLinks?.thumbnail?.replace('http:', 'https:') || null,
+            year: info.publishedDate ? info.publishedDate.substring(0, 4) : 'Unknown',
+          };
+        });
         setResults(formattedResults);
       } else {
         setError('No books found. Try a different search term.');
