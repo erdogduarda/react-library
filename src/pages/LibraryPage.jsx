@@ -19,10 +19,10 @@ export function LibraryPage() {
       className="space-y-8"
     >
       <header className="text-center mb-12">
-        <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight mb-3">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-3">
           My Collection
         </h1>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+        <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
           Your personal reading sanctuary. Track your progress and organize your literary journey.
         </p>
       </header>

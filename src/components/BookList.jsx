@@ -3,7 +3,7 @@ import { Trash2, Book } from 'lucide-react';
 
 export function BookList({ title, books, onMove, onRemove }) {
   return (
-    <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-white/20 flex-1 min-w-[300px]">
+    <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-white/20 flex-1 min-w-full sm:min-w-[300px]">
       <h2 className="text-xl font-bold mb-6 text-gray-800 border-b border-gray-100 pb-4 flex items-center justify-between">
         {title}
         <span className="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded-full">

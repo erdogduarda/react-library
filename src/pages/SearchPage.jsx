@@ -11,16 +11,16 @@ function SearchResultItem({ book, onAdd, inLibrary, index }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
-      className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex gap-6 hover:shadow-md transition-all duration-300"
+      className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-4 md:gap-6 hover:shadow-md transition-all duration-300"
     >
       {book.cover ? (
         <img
           src={book.cover}
           alt={book.title}
-          className="w-24 h-36 object-cover rounded-lg shadow-md flex-shrink-0"
+          className="w-full sm:w-24 h-48 sm:h-36 object-cover rounded-lg shadow-md flex-shrink-0"
         />
       ) : (
-        <div className="w-24 h-36 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 text-xs text-center p-2 flex-shrink-0">
+        <div className="w-full sm:w-24 h-48 sm:h-36 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 text-xs text-center p-2 flex-shrink-0">
           <Book className="w-8 h-8 opacity-50" />
         </div>
       )}
@@ -120,12 +120,12 @@ export function SearchPage() {
       className="max-w-4xl mx-auto"
     >
       <header className="text-center mb-10">
-        <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight mb-3">Find Books</h1>
-        <p className="text-lg text-gray-600">Discover your next great read from millions of books</p>
+        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-3">Find Books</h1>
+        <p className="text-base md:text-lg text-gray-600">Discover your next great read from millions of books</p>
       </header>
 
       <div className="bg-white p-2 rounded-2xl shadow-xl shadow-indigo-100/50 mb-10 border border-gray-100">
-        <form onSubmit={searchBooks} className="flex gap-2">
+        <form onSubmit={searchBooks} className="flex flex-col sm:flex-row gap-2">
           <div className="relative flex-1">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <Search className="h-5 w-5 text-gray-400" />
