@@ -85,6 +85,11 @@ export function SearchPage() {
       const response = await fetch(
         `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=20`
       );
+
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status}`);
+      }
+
       const data = await response.json();
 
       if (data.docs && data.docs.length > 0) {
@@ -102,6 +107,7 @@ export function SearchPage() {
         setError('No books found. Try a different search term.');
       }
     } catch (err) {
+      console.error('Search failed:', err);
       setError('Failed to fetch search results. Please try again.');
     } finally {
       setLoading(false);
